@@ -47,7 +47,7 @@
 // Configuration
 
 // clock config
-#define USE_DFLL
+//#define USE_DFLL
 // use 32MHz osc if makefile calls for it
 #if (F_CPU == 32000000L)
 // defaults to 2MHz RC oscillator
@@ -60,6 +60,8 @@
 //#define USE_AVR1008_EEPROM
 
 // bootloader entrace
+#define USE_ENTER_SW_RST
+//#define USE_ENTER_WDT_RST
 #define USE_ENTER_DELAY
 //#define USE_ENTER_PIN
 #define USE_ENTER_UART
@@ -70,7 +72,7 @@
 //#define LOCK_SPM_ON_EXIT
 
 // bootloader communication
-#define USE_LED
+//#define USE_LED
 #define USE_UART
 //#define USE_I2C
 //#define USE_I2C_ADDRESS_NEGOTIATION
@@ -126,9 +128,9 @@
 #define LED_INV                 1
 
 // UART
-#define UART_BAUD_RATE                  19200
-#define UART_PORT_NAME                  D
-#define UART_NUMBER                     1
+#define UART_BAUD_RATE                  38400
+#define UART_PORT_NAME                  E
+#define UART_NUMBER                     0
 #if (UART_NUMBER == 0)
 #define UART_TX_PIN                     3
 #else

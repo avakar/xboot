@@ -46,14 +46,24 @@ volatile unsigned char tx_char_cnt;
 unsigned char comm_mode;
 #endif // USE_INTERRUPTS
 
+void reset_vect(void);
+
 // Main code
 int main(void)
+{
+        PORTD.OUT = (1<<3);
+        PORTD.DIR = (1<<3);
+        for (;;)
+        {
+        }
+}
+#if 0
+void sss()
 {
         ADDR_T address = 0;
         unsigned char in_bootloader = 0;
         unsigned char val = 0;
         int i, j, k;
-        void (*reset_vect)( void ) = 0x000000;
         
         #ifdef USE_I2C_ADDRESS_NEGOTIATION
         unsigned short devid_bit;
@@ -196,6 +206,24 @@ int main(void)
                 // Set in_bootloader here to enter the bootloader
                 // Checked when USE_ENTER_DELAY is selected
                 // --------------------------------------------------
+                
+                #ifdef USE_ENTER_SW_RST
+                // Check whether the reset was caused by the application software
+                if (RST.STATUS & RST_SRF_bm)
+                {
+                        in_bootloader = 1;
+                        RST.STATUS = RST_SRF_bm;
+                }
+                #endif // USE_ENTER_SW_RST
+                
+                #ifdef USE_ENTER_WDT_RST
+                // Check whether the watchdog rest occured
+                if (RST.STATUS & RST_WDRF_bm)
+                {
+                        in_bootloader = 1;
+                        RST.STATUS = RST_WDRF_bm;
+                }
+                #endif // USE_ENTER_WDT_RST
                 
                 #ifdef USE_ENTER_PIN
                 // Check entry pin state
@@ -1105,5 +1133,4 @@ void BlockRead(unsigned int size, unsigned char mem, ADDR_T *address)
                 (*address) >>= 1;       // Convert address back to Flash words again.
         }
 }
-
-
+#endif
